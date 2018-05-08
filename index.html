@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8">
+  <title>Position Analytics</title>
+    <script src="webgl-heatmap.js"></script>
+    <script src="p5/p5.js" ></script>
+    <script src="sketch.js" async></script>
+  <meta name="google-signin-client_id" content="377188992723-ou7oq52is280s0d95lihhia1dfniq2c3.apps.googleusercontent.com">
+  <meta name="google-signin-scope" content="https://www.googleapis.com/auth/analytics.readonly">
+</head>
+	<body>
+	<h1>Position Analytics</h1>
+	<!-- The Sign-in button. This will run `queryReports()` on success. -->
+	<p class="g-signin2" data-onsuccess="queryReports"></p>
+
+	<!-- The API response will be printed here. -->
+	<!--<textarea cols="80" rows="20" id="query-output"></textarea>-->
+	<div id="selectorCountainer">
+		<table border="0">
+			<tr>
+				<td>Softness (point radius)<td>
+				<td>Scale (max time intensity)<td>
+			</tr>
+			<tr>
+				<td><input type="number" name="radius" id="radius" step="10" value="200" min="0"><td>
+				<td><input type="number" name="maxIntensity" id="maxIntensity" step="100" value="3000" min="0"><td>
+			</tr>
+		</table>
+	</div>
+	<div class="floorCountainer">
+		<div id="countainer" class="countainer">
+				<div class="mapBackgroundCountainer">
+					<img id="layer1" class="floorMap" alt="floor map" src="img/J304_floor1.png" />
+				</div>
+				<canvas id="layer2" class="floorMap"></canvas>
+		</div>
+	</div>
+	<div class="floorCountainer">
+		<div id="countainer2" class="countainer">
+			<div class="mapBackgroundCountainer">
+				<img id="floor2_layer1" class="floorMap" alt="floor map" src="img/J304_floor2.png" />
+			</div>
+			<canvas id="floor2_layer2" class="floorMap"></canvas>
+		</div>
+	</div>
+	
+	
+	
+	<div>
+		<p>Floor Map</p>
+	</div>
+	<!-- Load the JavaScript API client and Sign-in library. -->
+	<script src="https://apis.google.com/js/client:platform.js"></script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

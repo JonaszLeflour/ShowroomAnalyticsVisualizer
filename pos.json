@@ -1,0 +1,266 @@
+{
+  "reports": [
+    {
+      "columnHeader": {
+        "dimensions": [
+          "ga:eventCategory",
+          "ga:eventAction",
+          "ga:eventLabel",
+          "ga:minute"
+        ],
+        "metricHeader": {
+          "metricHeaderEntries": [
+            {
+              "name": "ga:metric1",
+              "type": "INTEGER"
+            },
+            {
+              "name": "ga:metric2",
+              "type": "INTEGER"
+            },
+            {
+              "name": "ga:metric3",
+              "type": "INTEGER"
+            }
+          ]
+        }
+      },
+      "data": {
+        "rows": [
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "10"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "-5974",
+                  "-1509",
+                  "2003"
+                ]
+              }
+            ]
+          },
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "11"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "-859",
+                  "-1092",
+                  "2017"
+                ]
+              }
+            ]
+          },
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "12"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "-617",
+                  "-176",
+                  "125"
+                ]
+              }
+            ]
+          },
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "16"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "446",
+                  "-583",
+                  "490"
+                ]
+              }
+            ]
+          },
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "19"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "442",
+                  "-322",
+                  "247"
+                ]
+              }
+            ]
+          },
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "31"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "8338",
+                  "-3843",
+                  "2554"
+                ]
+              }
+            ]
+          },
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "32"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "2146",
+                  "-195",
+                  "1127"
+                ]
+              }
+            ]
+          },
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "33"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "357",
+                  "-537",
+                  "487"
+                ]
+              }
+            ]
+          },
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "45"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "246",
+                  "-420",
+                  "510"
+                ]
+              }
+            ]
+          },
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "47"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "353",
+                  "-166",
+                  "385"
+                ]
+              }
+            ]
+          },
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "52"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "8941",
+                  "-3064",
+                  "3043"
+                ]
+              }
+            ]
+          },
+          {
+            "dimensions": [
+              "Moving",
+              "Teleported",
+              "Teleported",
+              "53"
+            ],
+            "metrics": [
+              {
+                "values": [
+                  "-3772",
+                  "-112",
+                  "1394"
+                ]
+              }
+            ]
+          }
+        ],
+        "totals": [
+          {
+            "values": [
+              "10047",
+              "-12019",
+              "14382"
+            ]
+          }
+        ],
+        "rowCount": 12,
+        "minimums": [
+          {
+            "values": [
+              "-5974",
+              "-3843",
+              "0"
+            ]
+          }
+        ],
+        "maximums": [
+          {
+            "values": [
+              "8941",
+              "0",
+              "3043"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
