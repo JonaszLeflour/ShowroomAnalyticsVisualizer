@@ -130,9 +130,25 @@ apartmentsInfo.set("I701",
 		upperLeftCorner:[[-414,-993,0]],
 		lowerRighCorner:[[576,690,250]]
 	});
+apartmentsInfo.set("O602", 
+	{
+		levelName:"O0602",
+		nbFloors:1,
+		imgPaths:['img/O0602_t.png'],
+		upperLeftCorner:[[-700,-585,0]],
+		lowerRighCorner:[[415,605,260]]
+	});
+apartmentsInfo.set("O604", 
+	{
+		levelName:"O0604",
+		nbFloors:1,
+		imgPaths:['img/O0604_t.png'],
+		upperLeftCorner:[[550,-405,0]],
+		lowerRighCorner:[[-760,590,260]]
+	});
 	
 var apartment = apartmentsInfo.get("J304");
-apartmentNames = ["J304","I701","M802","N602","N605"];
+apartmentNames = ["J304","I701","M802","N602","N605","O602","O604"];
 
 var apartmentSelect = document.getElementById("apartmentSelect");
 
