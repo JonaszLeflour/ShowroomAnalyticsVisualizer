@@ -26,7 +26,6 @@ var scaleX;
 var scaleY;
 var translateX ;
 var translateY;
-var mirrorYAxis = true;
 var apartmentsInfo = new Map();
 var canvasIDs = ["layer2","floor2_layer2"];
 var canvasArray = [document.getElementById(canvasIDs[0]),
@@ -138,7 +137,6 @@ document.getElementById("radius").addEventListener('input', function (evt) {
 
   // Query the API and print the results to the page.
   function queryReports() {
-	console.log("query");
     gapi.client.request({
       path: '/v4/reports:batchGet',
       root: 'https://analyticsreporting.googleapis.com/',
@@ -184,7 +182,6 @@ document.getElementById("radius").addEventListener('input', function (evt) {
   }
         
   function displayResults(response) {
-	console.log(response);
 	queryResponse = response;
 	queryDone = true;
 	if(imgLoaded){
@@ -206,7 +203,6 @@ function drawHeatmap(){
 		//resize canvas to fit background img
 		ctxArray[i].canvas.width = floorImg.width;
 		ctxArray[i].canvas.height = floorImg.height;
-		console.log("img: "+floorImg.width+", "+floorImg.height);
 		heatmapArray[i] = createWebGLHeatmap({canvas: canvasArray[i], intensityToAlpha:true});
 	}
 	var maxTime = 0;
@@ -232,10 +228,9 @@ function drawHeatmap(){
 	}
 	
 	for (let i = 0; i < jsonObj.reports[0].data.rows.length; i++ ) {
-        //console.log(jsonObj.reports[0].data.rows[i].metrics[0].values);
 		var apartmentName = jsonObj.reports[0].data.rows[i].dimensions[3];
 		var eventAction = jsonObj.reports[0].data.rows[i].dimensions[1];
-				
+		
 		if((eventAction == teleportEvent) && (apartmentName == apartment.levelName)){
 			xpos = parseInt(jsonObj.reports[0].data.rows[i].metrics[0].values[0]);
 			ypos = parseInt(jsonObj.reports[0].data.rows[i].metrics[0].values[1]);
@@ -246,9 +241,6 @@ function drawHeatmap(){
 			ypos += translateY;
 			xpos *= scaleX;
 			ypos *= scaleY;
-			if(mirrorYAxis){
-				ypos = floorImg.height - ypos;
-			}
 			
 			//todo : for more than 2 floors, create new canvas
 			
