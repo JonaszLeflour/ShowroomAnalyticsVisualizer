@@ -4,12 +4,46 @@ var jsonObj;
 var ypos;
 var xpos;
 
+var dateFrom = document.getElementById("dateFrom");
+var dateTo = document.getElementById("dateTo");
+var d = new Date();
+
+function dateToString(d){
+	var year = d.getFullYear();
+	var month = d.getMonth()+1;
+	var day = d.getDate();
+	s = "" + year+"-";
+	if(month<10){s+="0"}
+	s += month+"-";
+	if(day<10){s+="0"}
+	s += day;
+	return s;
+}
+
+dateTo.value = dateToString(d);
+d.setDate(d.getDate() - 30);
+dateFrom.value = dateToString(d);
+
+
+dateTo.addEventListener('input', function (evt) {
+    queryReports();
+});
+dateFrom.addEventListener('input', function (evt) {
+    queryReports();
+});
+
+
+
+
 //var imgPath = 'img/map_placeholder.png';
 var imgPath = 'img/J304_floor1.png';
 var imgLoaded = false;
 var queryDone = false;
 var floorImg = document.getElementById("layer1");
 var floor2Img = document.getElementById("floor2_layer1");
+
+
+
 var floorImgs = [floorImg,floor2Img];
 floorImg.onload = function(){imgLoaded=true;if(queryDone){drawHeatmap();};}
 
@@ -147,8 +181,8 @@ document.getElementById("radius").addEventListener('input', function (evt) {
             viewId: VIEW_ID,
             dateRanges: [
               {
-                startDate: '30daysAgo',
-                endDate: 'today'
+                startDate: dateFrom.value,
+                endDate: dateTo.value
               }
             ],
 			dimensions: [
@@ -227,15 +261,28 @@ function drawHeatmap(){
 		}
 	}
 	
+	var testMap = new Map();
+	
 	for (let i = 0; i < jsonObj.reports[0].data.rows.length; i++ ) {
 		var apartmentName = jsonObj.reports[0].data.rows[i].dimensions[3];
 		var eventAction = jsonObj.reports[0].data.rows[i].dimensions[1];
 		
 		if((eventAction == teleportEvent) && (apartmentName == apartment.levelName)){
+			
+			
+			
 			xpos = parseInt(jsonObj.reports[0].data.rows[i].metrics[0].values[0]);
 			ypos = parseInt(jsonObj.reports[0].data.rows[i].metrics[0].values[1]);
 			zpos = parseInt(jsonObj.reports[0].data.rows[i].metrics[0].values[2]);
 			time = parseInt(jsonObj.reports[0].data.rows[i].metrics[0].values[3]);
+			
+			if(testMap.has(jsonObj.reports[0].data.rows[i].dimensions[2])){
+				console.log("already present : "+jsonObj.reports[0].data.rows[i].dimensions[2]+" x="+xpos+" y="+ypos+"(vs "+testMap[jsonObj.reports[0].data.rows[i].dimensions[2]]+")");
+			}
+			testMap[jsonObj.reports[0].data.rows[i].dimensions[2]] = "x="+xpos+" y="+ypos;
+			
+			
+			
 			var intense = Math.min(1,Math.max(0,(time/maxTime)));
 			xpos += translateX;
 			ypos += translateY;
@@ -253,20 +300,20 @@ function drawHeatmap(){
 			}*/
 			
 			//dirty fix. Use on old data
-			if((apartment.nbFloors>1) && (zpos < floor1Separation)){
+			/*if((apartment.nbFloors>1) && (zpos < floor1Separation)){
 				heatmapArray[1].addPoints([{x:xpos, y:ypos, size:radius*scaleX, intensity:intense}]);
 			}
 			else{
 				heatmapArray[0].addPoints([{x:xpos, y:ypos, size:radius*scaleX, intensity:intense}]);
-			}
+			}*/
 			
 			//Use on new data
-			/*if(zpos > floor1Separation){
+			if(zpos > floor1Separation){
 				heatmapArray[0].addPoints([{x:xpos, y:ypos, size:radius*scaleX, intensity:intense}]);
 			}
 			else{
 				heatmapArray[0].addPoints([{x:xpos, y:ypos, size:radius*scaleX, intensity:intense}]);
-			}*/
+			}
 			
 		}
 	}
