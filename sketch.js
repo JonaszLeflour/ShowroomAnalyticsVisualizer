@@ -32,6 +32,9 @@ dateFrom.addEventListener('input', function (evt) {
     queryReports();
 });
 
+window.addEventListener('resize', function(evt) {
+    drawHeatmap();
+});
 
 
 
@@ -154,19 +157,20 @@ var apartmentSelect = document.getElementById("apartmentSelect");
 
 
 apartmentSelect.addEventListener('change', function(evt) {
+	clearHeatmap();
+	queryDone = false;
 	var val = apartmentSelect.options[apartmentSelect.selectedIndex].value;
 	apartment = apartmentsInfo.get(val);
 	
-	for(let i = 0; i< apartment.nbFloors; i++){
-		floorImgs[i].onload = function(){imgLoaded=true;if(queryDone){drawHeatmap();};}
-		floorImgs[i].src = apartment.imgPaths[i];
-		floorImgs[i].style.display = "initial";
-		canvasArray[i].style.display = "initial";
-	}
 	for(let i = apartment.nbFloors; i< floorImgs.length; i++){
 		floorImgs[i].style.display = "none";
 		canvasArray[i].style.display = "none";
-		
+	}
+	floorImgs[0].onload = function(){imgLoaded=true;queryReports();}
+	for(let i = 0; i< apartment.nbFloors; i++){
+		floorImgs[i].src = apartment.imgPaths[i];
+		floorImgs[i].style.display = "initial";
+		canvasArray[i].style.display = "initial";
 	}
 	
 });
@@ -207,16 +211,17 @@ document.getElementById("radius").addEventListener('input', function (evt) {
 				{name: 'ga:eventLabel'},
                 {name: 'ga:dimension1'}
 			],
+			filtersExpression:'ga:eventAction==TeleportingOut;ga:dimension1=='+apartment.levelName,
 			/*dimensionFilterClauses: [{
 				filters: [{
-					dimensionName: 'ga:eventAction',
+					dimension_name: 'ga:eventAction',
 					operator: 'EXACT',
 					expressions: ["TeleportingOut"]
 				},
 				{
 					dimensionName: 'ga:dimension1',
 					operator: 'EXACT',
-					expressions: [apartment]
+					expressions: [apartment.levelName]
 				}]
 			}],*/
 			metrics: [
@@ -239,12 +244,29 @@ document.getElementById("radius").addEventListener('input', function (evt) {
 	}
   }
   
+  
+function clearHeatmap(){
+	var ctxArray = [];
+	var heatmapArray = [];
+	for(let i = 0; i < apartment.nbFloors; i++){
+		ctxArray.push(canvasArray[i].getContext("webgl"));
+		//resize canvas to fit background img
+		ctxArray[i].canvas.width = floorImg.width;
+		ctxArray[i].canvas.height = floorImg.height;
+		heatmapArray[i] = createWebGLHeatmap({canvas: canvasArray[i], intensityToAlpha:true});
+		heatmapArray[i].update();
+		heatmapArray[i].display();
+	}
+}
+  
 function drawHeatmap(){
 	if(!(queryDone && imgLoaded)){
 		return;
 	}
 	var formattedJson = JSON.stringify(queryResponse.result, null, 2);
     jsonObj = JSON.parse(formattedJson);
+	
+	
 	
 	var ctxArray = [];
 	var heatmapArray = [];
@@ -255,6 +277,16 @@ function drawHeatmap(){
 		ctxArray[i].canvas.height = floorImg.height;
 		heatmapArray[i] = createWebGLHeatmap({canvas: canvasArray[i], intensityToAlpha:true});
 	}
+	//if no results, nothing to draw
+	if(typeof jsonObj.reports[0].data.rows == 'undefined'){
+		for(let i = 0; i < apartment.nbFloors; i++){
+			heatmapArray[i].update();
+			heatmapArray[i].display();
+		}
+		return;
+	}
+	
+	
 	var maxTime = 0;
 	var floor1Separation = apartment.lowerRighCorner[0][2];
 	var maxIntensity = document.getElementById("maxIntensity").value;//= 5000;
@@ -270,8 +302,8 @@ function drawHeatmap(){
 	
 	//find maximum amount of time in room, can't exceed maxIntensity
 	for (let i = 0; i < jsonObj.reports[0].data.rows.length; i++ ) {
-		if(jsonObj.reports[0].data.rows[i].dimensions[1] == teleportEvent
-			&& jsonObj.reports[0].data.rows[i].dimensions[3] == apartment.levelName){
+		if((jsonObj.reports[0].data.rows[i].dimensions[1] == teleportEvent)
+			&& (jsonObj.reports[0].data.rows[i].dimensions[3] == apartment.levelName)){
 			time = parseInt(jsonObj.reports[0].data.rows[i].metrics[0].values[3]);
 			maxTime = Math.max(maxTime,Math.min(maxIntensity,time));	
 		}
@@ -324,13 +356,15 @@ function drawHeatmap(){
 			}*/
 			
 			//Use on new data
-			if(zpos > floor1Separation){
-				heatmapArray[0].addPoints([{x:xpos, y:ypos, size:radius*scaleX, intensity:intense}]);
+			if(apartment.nbFloors>1 && zpos > floor1Separation){
+				heatmapArray[1].addPoints([{x:xpos, y:ypos, size:radius*scaleX, intensity:intense}]);
 			}
 			else{
 				heatmapArray[0].addPoints([{x:xpos, y:ypos, size:radius*scaleX, intensity:intense}]);
 			}
-			
+		}
+		else{
+			console.log(eventAction+"!="+teleportEvent+" or "+apartment.levelName+"!="+apartmentName);
 		}
 	}
 	for(let i = 0; i < apartment.nbFloors; i++){
